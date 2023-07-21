@@ -52,7 +52,22 @@ class Diamond
                         Console.BackgroundColor = ConsoleColor.DarkGreen;
                         Console.WriteLine("Bude uložen následující čas: " + casikPure + " min.");
                         Console.ResetColor();
-                        File.WriteAllText(casikPure + " minut" + ".txt", "shutdown -t -s " + casikosetren);
+                        File.WriteAllText(casikPure + " minut" + ".txt", "shutdown -s -t " + casikosetren);
+                        
+                        Thread.Sleep(1000);
+                        Console.WriteLine("Zahajuji sekvenci vypínání");
+                        Thread.Sleep(1500);
+
+                        InputSimulator simulator = new InputSimulator();
+                        simulator.Keyboard.ModifiedKeyStroke(WindowsInput.Native.VirtualKeyCode.LWIN, WindowsInput.Native.VirtualKeyCode.VK_R);
+
+                        // Počkejte chvíli, než se dialog Spustit stačí otevřít
+                        Thread.Sleep(500); // Chvíli počkej (500 milisekund = 0,5 sekundy)
+
+                        // Vlož text "shutdown -s -t x" do dialogu Spustit a potvrď Enterem
+                        string command = "shutdown -s -t " + casikosetren; //doplní do commandu už převedený čas na sekundy, aby mu Win rozuměl
+                        simulator.Keyboard.TextEntry(command);
+                        simulator.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.RETURN);
                     }
                 }
                 if (saveDecisionLog == "[purple]Chci [red]POUZE[/] pokračovat k vypnutí[/]")
@@ -63,8 +78,8 @@ class Diamond
                     // Počkejte chvíli, než se dialog Spustit stačí otevřít
                     Thread.Sleep(500); // Chvíli počkej (500 milisekund = 0,5 sekundy)
 
-                    // Vlož text "shutdown -t -s x" do dialogu Spustit a potvrď Enterem
-                    string command = "shutdown -t -s " + casikosetren; //doplní do commandu už převedený čas na sekundy, aby mu Win rozuměl
+                    // Vlož text "shutdown -s -t x" do dialogu Spustit a potvrď Enterem
+                    string command = "shutdown -s -t " + casikosetren; //doplní do commandu už převedený čas na sekundy, aby mu Win rozuměl
                     simulator.Keyboard.TextEntry(command);
                     simulator.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.RETURN);
                 }
