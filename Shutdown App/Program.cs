@@ -9,6 +9,9 @@ class Diamond
 {
     public static void Main()
     {
+        string targetDirectory = "C:\\Logs for shutdown app"; // Vytvoří složku "MujNovyAdresar" v kořenovém adresáři disku C
+        Directory.CreateDirectory(targetDirectory);
+
         string casikPure = "";
         Home:
         Console.Clear();
@@ -17,8 +20,12 @@ class Diamond
                 .Title("[red]Vyber z následujících: [/]")
                 .PageSize(10)
                 .MoreChoicesText("[red]Vyber launcher šipkami[/]") // Zde je odstraněna mezičárka za [red]
-                .AddChoices("[purple]Chci zadat čas kdy chci počítač vypnout[/]", "[purple]Chci vybrat z mnou dříve zadaných časů[/]")
+                .AddChoices("[purple]Chci zadat čas kdy chci počítač vypnout[/]", "[purple]Chci vybrat z mnou dříve zadaných časů[/]", "[red]Ukončit aplikaci[/]")
         );
+        if (decisionlog == "[red]Ukončit aplikaci[/]")
+        {
+            return;
+        }
         if (decisionlog == "[purple]Chci zadat čas kdy chci počítač vypnout[/]")
         {
             Console.WriteLine("zadej čas v minutách: ");
@@ -41,7 +48,10 @@ class Diamond
 
                 if (saveDecisionLog == "[purple]Chci uložit čas a pokračovat k vypnutí[/]")
                 {
-                    if (File.Exists(casikPure + " minut" + ".txt"))  /*zkontroluje, jestli už nejsou údaje v paměti a když ne zapíše je k danému launcheru*/
+
+                    string filePath = Path.Combine(targetDirectory, casikPure + " minut" + ".txt");
+
+                    if (File.Exists(filePath))  /*zkontroluje, jestli už nejsou údaje v paměti a když ne zapíše je k danému launcheru*/
                     {
                         Console.ForegroundColor = ConsoleColor.DarkRed;
                         Console.WriteLine("PRO TENTO ČASOVÝ ÚDAJ UŽ MÁŠ ULOŽENO... ty maniaku!");
@@ -52,8 +62,8 @@ class Diamond
                         Console.BackgroundColor = ConsoleColor.DarkGreen;
                         Console.WriteLine("Bude uložen následující čas: " + casikPure + " min.");
                         Console.ResetColor();
-                        File.WriteAllText(casikPure + " minut" + ".txt", "shutdown -s -t " + casikosetren);
-                        
+                        File.WriteAllText(filePath, "shutdown -s -t " + casikosetren);
+
                         Thread.Sleep(1000);
                         Console.WriteLine("Zahajuji sekvenci vypínání");
                         Thread.Sleep(1500);
@@ -104,7 +114,7 @@ class Diamond
         {
             try /*ošetřuje, jestli ještě nebyla data zapsána*/
             {
-                string directoryPath = "C:\\Users\\jakub\\source\\repos\\Shutdown App\\Shutdown App\\bin\\Debug\\net6.0";
+                string directoryPath = "C:\\Logs for shutdown app";
                 string[] txtFiles = Directory.GetFiles(directoryPath, "*.txt");
                 foreach (string txtFile in txtFiles)
                 {
