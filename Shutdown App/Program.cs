@@ -36,7 +36,7 @@ class Diamond
                     .Title("[red]Vyber z následujících: [/]")
                     .PageSize(10)
                     .MoreChoicesText("[red]Vyber launcher šipkami[/]")
-                    .AddChoices("[purple]Chci uložit čas a pokračovat k vypnutí[/]", "[purple]Chci [red]POUZE[/] pokračovat k vypnutí[/]")
+                    .AddChoices("[purple]Chci uložit čas a pokračovat k vypnutí[/]", "[purple]Chci [red]POUZE[/] pokračovat k vypnutí[/]" , "Zpět")
                     );
 
                 if (saveDecisionLog == "[purple]Chci uložit čas a pokračovat k vypnutí[/]")
@@ -83,7 +83,8 @@ class Diamond
                     simulator.Keyboard.TextEntry(command);
                     simulator.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.RETURN);
                 }
-                 
+                if (saveDecisionLog == "Zpět")
+                { goto Home; }
                 
                 
                 
@@ -116,8 +117,39 @@ class Diamond
                     .Title("[red]Vyber z následujících: [/]")
                     .PageSize(40)
                     .MoreChoicesText("")
-                    .AddChoices("[red]Smazat[/]", "[purple]Zpět[/]")
+                    .AddChoices("Vybrat čas", "[red]Smazat[/]", "[purple]Zpět[/]")
                     );
+                if (deleteOrBackLog == "Vybrat čas")
+                {
+                    try
+                    {
+                        Console.WriteLine("Vypiš čas, který z dříve zadaných chceš spustit");
+                        string latelyWritten = Console.ReadLine();
+                        int casikOsetren2 = int.Parse(latelyWritten) * 60;
+                        Thread.Sleep(1000);
+                        Console.WriteLine("Zahajuji sekvenci vypínání");
+                        Thread.Sleep(1500);
+
+                        InputSimulator simulator = new InputSimulator();
+                        simulator.Keyboard.ModifiedKeyStroke(WindowsInput.Native.VirtualKeyCode.LWIN, WindowsInput.Native.VirtualKeyCode.VK_R);
+
+                        // Počkejte chvíli, než se dialog Spustit stačí otevřít
+                        Thread.Sleep(500); // Chvíli počkej (500 milisekund = 0,5 sekundy)
+
+                        // Vlož text "shutdown -s -t x" do dialogu Spustit a potvrď Enterem
+                        string command = "shutdown -s -t " + casikOsetren2; //doplní do commandu už převedený čas na sekundy, aby mu Win rozuměl
+                        simulator.Keyboard.TextEntry(command);
+                        simulator.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.RETURN);
+                    }
+                    catch (System.FormatException)
+                    {
+                        Console.BackgroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("-NEZADÁNO-");
+                        Console.ResetColor();
+                        Console.ReadKey();
+                        goto Home;
+                    }
+                }
                 if (deleteOrBackLog == "[red]Smazat[/]")
                 {
                     Console.WriteLine("Napiš časovou jednotku, kterou si přeješ smazat");
