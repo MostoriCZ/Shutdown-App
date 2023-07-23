@@ -15,6 +15,7 @@ class Diamond
         string casikPure = "";
         Home:
         Console.Clear();
+        Console.WriteLine("Ahoj, jsem Aneta a ráda ti pomůžu s vypnutím " + "počítače");
         string decisionlog = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .Title("[red]Vyber z následujících: [/]")
@@ -164,8 +165,11 @@ class Diamond
                 {
                     Console.WriteLine("Napiš časovou jednotku, kterou si přeješ smazat");
                     string mankindDecision = Console.ReadLine();
-                    string smazuTeJakLolko = mankindDecision + " minut" + ".txt";
+                    string smazuTeJakLolko = Path.Combine(targetDirectory, mankindDecision + " minut" + ".txt");
                     File.Delete(smazuTeJakLolko);
+                    Thread.Sleep(1000);
+                    Console.WriteLine($"Soubor {mankindDecision} minut.txt byl úspěšně smazán.");
+                    Thread.Sleep(1000);
                     goto Home;
                 }
                 if (deleteOrBackLog == "[purple]Zpět[/]")
