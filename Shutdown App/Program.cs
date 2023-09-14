@@ -9,7 +9,7 @@ class Diamond
 {
     public static void Main()
     {
-        string targetDirectory = "C:\\Logs for shutdown app"; // Vytvoří složku "MujNovyAdresar" v kořenovém adresáři disku C
+        string targetDirectory = "C:\\LOGY_PRO_SHUTDOWN_APP"; // Vytvoří složku "LOGY_PRO_SHUTDOWN_APP" v rooťáku adresáře disku C
         Directory.CreateDirectory(targetDirectory);
 
         string casikPure = "";
@@ -20,7 +20,7 @@ class Diamond
             new SelectionPrompt<string>()
                 .Title("[red]Vyber z následujících: [/]")
                 .PageSize(10)
-                .MoreChoicesText("[red]Vyber launcher šipkami[/]") // Zde je odstraněna mezičárka za [red]
+                .MoreChoicesText("[red]Vyber launcher šipkami[/]") 
                 .AddChoices("[purple]Chci zadat čas kdy chci počítač vypnout[/]", "[purple]Chci vybrat z mnou dříve zadaných časů[/]", "[red]Ukončit aplikaci[/]")
         );
         if (decisionlog == "[red]Ukončit aplikaci[/]")
@@ -72,8 +72,8 @@ class Diamond
                         InputSimulator simulator = new InputSimulator();
                         simulator.Keyboard.ModifiedKeyStroke(WindowsInput.Native.VirtualKeyCode.LWIN, WindowsInput.Native.VirtualKeyCode.VK_R);
 
-                        // Počkejte chvíli, než se dialog Spustit stačí otevřít
-                        Thread.Sleep(500); // Chvíli počkej (500 milisekund = 0,5 sekundy)
+                        // Počká chvíli, než se dialog Spustit stačí otevřít
+                        Thread.Sleep(500); // Chvíli počká (500 milisekund = 0,5 sekundy)
 
                         // Vlož text "shutdown -s -t x" do dialogu Spustit a potvrď Enterem
                         string command = "shutdown -s -t " + casikosetren; //doplní do commandu už převedený čas na sekundy, aby mu Win rozuměl
@@ -144,7 +144,7 @@ class Diamond
                         InputSimulator simulator = new InputSimulator();
                         simulator.Keyboard.ModifiedKeyStroke(WindowsInput.Native.VirtualKeyCode.LWIN, WindowsInput.Native.VirtualKeyCode.VK_R);
 
-                        // Počkejte chvíli, než se dialog Spustit stačí otevřít
+                        // Počká chvíli, než se dialog Spustit stačí otevřít
                         Thread.Sleep(500); // Chvíli počkej (500 milisekund = 0,5 sekundy)
 
                         // Vlož text "shutdown -s -t x" do dialogu Spustit a potvrď Enterem
